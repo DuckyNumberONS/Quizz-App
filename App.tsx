@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import LoginScreen from "./screens/LoginScreen";
 import HomeScreen from "./screens/HomeScreen";
-import QuestionScreen from "./screens/QuestionScreen";
+// import QuestionScreen from "./screens/QuestionScreen";
 import StartScreen from "./screens/StartScreen";
 import CheckAccount from "./screens/StartScreen/Checking-Account";
 import TypeAccount from "./screens/RegisterScreen/TypeAccountScreen";
@@ -128,7 +128,7 @@ function App() {
                 gestureEnabled: false,
               }}
             />
-            <Stack.Screen name="Question" component={QuestionScreen} />
+            {/* <Stack.Screen name="Question" component={QuestionScreen} /> */}
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

@@ -14,6 +14,8 @@ import fakeData from "../../src/config/fakeData";
 import { useSelector } from "react-redux";
 import { user } from "../../src/lib/redux/selector/selector";
 import ChooiseTypeQuestion from "../../components/popup/popupChooiseTypeQuestion";
+import { postQuizz } from "../../src/lib/api/quizz";
+import { User } from "../../src/lib/modal/user";
 
 interface PropsQuizz {
   urlThumbnail: string;
@@ -27,8 +29,12 @@ interface PropsQuizz {
 const CreateQuizzScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const dataUser = useSelector(user);
+  const idUser = dataUser._id;
   const [collection, setCollection] = useState<Collection[]>([]);
   const [popup, setPopup] = useState(false);
+  const [error, setError] = useState("");
+  const [idQuizz, setIdQuizz] = useState("");
+
   const selectCollecton = collection.map((items) => ({
     id: items._id,
     name: items.title,
@@ -51,7 +57,17 @@ const CreateQuizzScreen = () => {
 
   const onSubmit = async (data: PropsQuizz) => {
     if (data) {
-      setPopup(true);
+      const datas = { ...data, idUser };
+      try {
+        const res = await postQuizz(datas);
+        if (res) {
+          setIdQuizz(res._id);
+          setPopup(true);
+        }
+      } catch (error) {
+        console.log(error);
+        setError(error);
+      }
     }
   };
 
@@ -179,7 +195,9 @@ const CreateQuizzScreen = () => {
           />
         </View>
       </FormCreateQuizz>
-      {popup && <ChooiseTypeQuestion popups={popup} setPopups={setPopup} />}
+      {popup && (
+        <ChooiseTypeQuestion id={idQuizz} popups={popup} setPopups={setPopup} />
+      )}
     </Layout>
   );
 };

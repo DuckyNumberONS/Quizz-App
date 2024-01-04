@@ -1,54 +1,62 @@
 import axios from "../../utils/index";
-import { Collection } from "../modal/collection";
+import { Question } from "../modal/question";
+import { Quizz, QuizzPost } from "../modal/quizz";
 
-export const getListCollection = async () => {
+export const getListQuizz = async () => {
   try {
-    const response = await axios.get("/collection/getAllCollection");
-    const collection = response.data;
-    return collection;
+    const response = await axios.get("/quizz/getAllQuizz");
+    const quizz = response.data;
+    return quizz;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const getItemCollection = async (id: string | string[]) => {
+export const getItemQuizz = async (id: string | string[]) => {
   try {
-    const response = await axios.get(`/collection/getItemCollection/${id}`);
-    const collection = response.data;
-    return collection;
+    const response = await axios.get(`/quizz/getItemQuizz/${id}`);
+    const quizz = response.data;
+    return quizz;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const postCollection = async (data: Collection) => {
+export const postQuizz = async (data: QuizzPost) => {
   try {
-    const response = await axios.post("/collection/createCollection", data);
-    const collection = response.data;
-    return collection;
+    const response = await axios.post("/quizz/createQuizz", data);
+    const quizz = response.data;
+    return quizz;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const updateItemCollection = async (data: Collection, id: string) => {
+export const updateItemQuizz = async (data: QuizzPost, id: string) => {
   try {
-    const response = await axios.put(
-      `/collection/updateCollection/${id}`,
-      data
-    );
-    const collection = response.data;
-    return collection;
+    const response = await axios.put(`/quizz/updateQuizz/${id}`, data);
+    const quizz = response.data;
+    return quizz;
   } catch (error) {
     console.error(error);
   }
 };
 
-export const deleteCollection = async (id: string) => {
+export const addQuestion = async (data: Question, id: string) => {
   try {
-    const response = await axios.delete(`/collection/deleteCollection/${id}`);
-    const Collection = response.data;
-    return Collection;
+    const response = await axios.put(`/quizz/addQuestions/${id}`, data);
+    const quizz = response.data;
+    return quizz;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deleteQuizz = async (id: string) => {
+  try {
+    const response = await axios.delete(`/quizz/deleteQuizz/${id}`);
+    const quizz = response.data;
+    return quizz;
   } catch (error) {
     console.error(error);
   }

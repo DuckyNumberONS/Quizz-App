@@ -9,10 +9,10 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const instance = axios.create({
   // DÙng ở nhà
-  // baseURL: "http://192.168.1.7:8004",
+  baseURL: "http://192.168.1.8:8004",
   // DÙng ở trường
   // baseURL: "http://172.16.234.181:8004",
-  baseURL: "http://192.168.0.5:8004",
+  // baseURL: "http://192.168.0.5:8004",
   timeout: 5000,
 });
 
@@ -22,6 +22,7 @@ const setTokenHeader = async () => {
   try {
     const storedData = await useGetAsyncStorage("root");
     const selectedToken = storedData?.token;
+
     if (selectedToken) {
       instance.interceptors.request.use(
         function (config: any) {

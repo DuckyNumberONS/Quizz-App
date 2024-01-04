@@ -1,11 +1,13 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Image, ScrollView } from "react-native";
 import Animated, { FadeIn } from "react-native-reanimated";
 import { useDispatch, useSelector } from "react-redux";
 import { clearAnwsers } from "../../../src/lib/redux/user/anwsersReducer";
 import { question } from "../../../src/lib/redux/selector/selector";
+import { getItemQuizz } from "../../../src/lib/api/quizz";
+import { Quizz } from "../../../src/lib/modal/quizz";
 interface Props {
   children: ReactNode;
   handleSubmit?: any;
@@ -13,6 +15,10 @@ interface Props {
   title: string;
   titleButton: string;
   theme?: string;
+}
+
+interface PropsPrams {
+  id?: string;
 }
 
 const FormCreateQuesion: React.FC<Props> = ({
@@ -24,9 +30,20 @@ const FormCreateQuesion: React.FC<Props> = ({
   theme = "white",
 }) => {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const [quizz, setQuizz] = useState<Quizz | undefined>(undefined);
   const route = useRoute();
+  const { id }: PropsPrams = route.params;
   const currentScreen = route.name;
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await getItemQuizz(id);
+      setQuizz(res);
+    };
+    fetch();
+  }, []);
+
   const handleBackScreen = () => {
     switch (currentScreen) {
       case "CreateQuestion":
@@ -38,8 +55,9 @@ const FormCreateQuesion: React.FC<Props> = ({
     }
   };
 
-  const dataArrQuestion = useSelector(question);
+  const dataQuestions = quizz ? quizz.question : [];
   const handleReomoveQuestion = (id: any) => {};
+
   return (
     <View className="mt-3 h-full mx-3" style={{ backgroundColor: `${theme}` }}>
       <View className="flex-row items-center">
@@ -55,34 +73,35 @@ const FormCreateQuesion: React.FC<Props> = ({
       <View className="border-t border-[#bebcc9]">
         <View className="flex-row items-center relative mt-4">
           <ScrollView horizontal>
-            {dataArrQuestion.map((items, index) => (
-              <View key={index} className="relative mr-2">
-                <View className="absolute z-100 w-full h-full bottom-0 rounded-2xl" />
-                <Image
-                  style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
-                  className="bg-cover w-[150px] h-[90px] rounded-2xl"
-                  source={items.backgroundQuestion}
-                  resizeMethod="auto"
-                />
-                <View className="absolute bottom-6 flex-row items-center justify-between w-full px-2">
-                  <View className="bg-blue-600 px-3 py-1 rounded-full">
-                    <Text className="font-medium text-white text-lg">
-                      {index + 1}
-                    </Text>
+            {dataQuestions.length > 0 &&
+              dataQuestions.map((items, index) => (
+                <View key={index} className="relative mr-2">
+                  <View className="absolute z-100 w-full h-full bottom-0 rounded-2xl" />
+                  <Image
+                    style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+                    className="bg-cover w-[150px] h-[90px] rounded-2xl"
+                    source={{ uri: items.imgQuestion }}
+                    resizeMethod="auto"
+                  />
+                  <View className="absolute bottom-6 flex-row items-center justify-between w-full px-2">
+                    <View className="bg-blue-600 px-3 py-1 rounded-full">
+                      <Text className="font-medium text-white text-lg">
+                        {index + 1}
+                      </Text>
+                    </View>
+                    <TouchableOpacity
+                      className="bg-[#e35454] px-1 py-1 rounded-xl"
+                      // onPress={() => handleReomoveQuestion(items)}
+                    >
+                      <Image
+                        className="w-[26px] h-[26px] rounded-2xl"
+                        source={require("../../../public/images/trash-can.png")}
+                        resizeMethod="auto"
+                      />
+                    </TouchableOpacity>
                   </View>
-                  <TouchableOpacity
-                    className="bg-[#e35454] px-1 py-1 rounded-xl"
-                    onPress={() => handleReomoveQuestion(items)}
-                  >
-                    <Image
-                      className="w-[26px] h-[26px] rounded-2xl"
-                      source={require("../../../public/images/trash-can.png")}
-                      resizeMethod="auto"
-                    />
-                  </TouchableOpacity>
                 </View>
-              </View>
-            ))}
+              ))}
             <Animated.View
               className="h-full flex-row items-center ml-5"
               entering={FadeIn.delay(400).duration(2000).springify()}
