@@ -15,6 +15,7 @@ import Input from "../../components/input";
 import { verifyLogin } from "../../src/lib/api/auth";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../src/lib/redux/action/user";
+import { setToken } from "../../src/lib/redux/action/token";
 // import axios from "../../src/utils/index";
 
 interface Auth {
@@ -27,8 +28,10 @@ export default function LoginScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const onSubmit = async (data: Auth) => {
     const res = await verifyLogin(data);
+    console.log("🚀 ~ file: index.tsx:31 ~ onSubmit ~ res:", res);
     if (res != undefined) {
       dispatch(setUser(res.userFilter));
+      dispatch(setToken(res.accessToken));
       navigation.push("Home");
     } else {
       console.log("false");

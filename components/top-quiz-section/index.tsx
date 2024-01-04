@@ -4,13 +4,6 @@ import NavbarCategory from "../navbar-category";
 import { topAutors, topQuiz } from "../../src/config/top";
 
 const TopQiz = () => {
-  const arr = topQuiz.map((quiz) => ({
-    id: quiz.id,
-    color: quiz.color,
-    autors: topAutors.find((author) => quiz.id === author.id),
-    totalQuestion: quiz.totalQuestion,
-    url: quiz.url,
-  }));
   return (
     <View className="mt-6">
       <NavbarCategory title="Top quiz" />

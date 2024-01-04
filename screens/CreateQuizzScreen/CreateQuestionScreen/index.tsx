@@ -1,5 +1,5 @@
-import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, TextInput } from "react-native";
 import Layout from "../../../components/layout";
 import { useForm } from "react-hook-form";
 import Input from "../../../components/input";
@@ -14,20 +14,24 @@ import { anwsers } from "../../../src/lib/redux/selector/anwsersSelect";
 import { setQuestion } from "../../../src/lib/redux/user/questionsReducer";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { addQuestion, updateItemQuizz } from "../../../src/lib/api/quizz";
+import { useRoute } from "@react-navigation/native";
 
 interface PropsData {
   isCorrect: boolean;
   text: string;
   number: number;
 }
+interface PropsPrams {
+  id?: string;
+}
 
 interface PropsDataAnwers {
-  id: string;
-  anwsers: Array<PropsData>;
+  title: string;
   imgQuestion: string;
   point: number;
   time: number;
-  title: string;
+  anwsers: Array<PropsData>;
 }
 
 const CreateQuestionScreen = () => {
@@ -40,6 +44,9 @@ const CreateQuestionScreen = () => {
   } = useForm();
   const dataAnwers: Array<PropsData> = useSelector(anwsers);
   const dispatch = useDispatch();
+  const route = useRoute();
+  const { id }: PropsPrams = route.params;
+
   function areTextValuesUnique(array) {
     const textValues = new Set();
     for (const item of array) {
@@ -51,16 +58,17 @@ const CreateQuestionScreen = () => {
     return true;
   }
 
-  const onSubmit = (data: PropsDataAnwers) => {
-    console.log("onSubmit");
+  const onSubmit = async (data: PropsDataAnwers) => {
     const validateText = areTextValuesUnique(dataAnwers);
     if (validateText && dataAnwers.length > 0 && data) {
-      const successData = {
+      const question = {
         anwsers: dataAnwers,
         ...data,
       };
-      dispatch(setQuestion(successData));
-      navigation.push("CreateQuestion");
+      const res = await addQuestion(question, id);
+      if (res) {
+        navigation.push("CreateQuestion", { id: id });
+      }
     } else if (!validateText) {
       setError("existext", {
         type: "required",
@@ -71,6 +79,7 @@ const CreateQuestionScreen = () => {
 
   return (
     <Layout>
+      <TextInput defaultValue="https://png.pngtree.com/background/20230610/original/pngtree-roosters-with-a-long-red-beak-and-wings-standing-up-picture-image_3024314.jpg" />
       <FormCreateQuesion
         title="Create Question"
         onSubmit={onSubmit}

@@ -18,16 +18,17 @@ import Animated, {
 interface Props {
   popups: boolean;
   setPopups: Dispatch<SetStateAction<boolean>>;
+  id?: string;
 }
 
-const ChooiseTypeQuestion: React.FC<Props> = ({ popups, setPopups }) => {
+const ChooiseTypeQuestion: React.FC<Props> = ({ popups, setPopups, id }) => {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const closePopup = useCallback(() => {
     setPopups(false);
   }, []);
 
   const handlePushRouter = (link: string) => {
-    navigation.push(`${link}`);
+    navigation.push(`${link}`, { id: id });
   };
   const quizzType = [
     {
