@@ -7,6 +7,7 @@ import {
   ScrollView,
   SafeAreaView,
   StatusBar,
+  Animated,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -14,10 +15,15 @@ import Layout from "../../components/layout";
 import { useSelector } from "react-redux";
 import { user } from "../../src/lib/redux/selector/selector";
 import { User } from "../../src/lib/modal/user";
+import NavbarProfile from "../../components/navbar-profile";
 
 const ProfileScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const data: User = useSelector(user);
+  const [keys, setKeys] = useState("Quizer");
+  const handleClick = (key: string) => {
+    setKeys(key);
+  };
 
   return (
     <Layout>
@@ -87,26 +93,43 @@ const ProfileScreen = () => {
             <Text className="text-center text-[20px] font-bold">40</Text>
           </View>
         </View>
-        <View className="mt-8">
+        {/* <View className="mt-8">
           <TouchableOpacity className="bg-black py-3 rounded-3xl">
             <Text className="text-[18px] text-center font-medium text-[#fbfbfb]">
               Edit profile
             </Text>
           </TouchableOpacity>
-        </View>
+        </View> */}
         <View className="bg-[#edf0da] flex-row items-center w-full mt-6 rounded-3xl">
-          <View className="w-1/3 bg-white py-2 rounded-3xl border-[4px] border-[#edf0da]">
+          <TouchableOpacity
+            onPress={() => handleClick("Quizer")}
+            className="w-1/3 py-2 rounded-3xl border-[4px] border-[#edf0da]"
+            style={keys === "Quizer" && { backgroundColor: "white" }}
+          >
             <Text className="text-center text-[19px] font-medium">Quizer</Text>
-          </View>
-          <View className="w-1/3 py-3 rounded-3xl">
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleClick("Collections")}
+            className="w-1/3 py-2 rounded-3xl border-[4px] border-[#edf0da]"
+            style={keys === "Collections" && { backgroundColor: "white" }}
+          >
             <Text className="text-center text-[19px] font-medium">
               Collections
             </Text>
-          </View>
-          <View className="w-1/3 py-3 rounded-3xl">
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleClick("About")}
+            className="w-1/3 py-2 rounded-3xl border-[4px] border-[#edf0da]"
+            style={
+              keys === "About" && {
+                backgroundColor: "white",
+              }
+            }
+          >
             <Text className="text-center text-[19px] font-medium">About</Text>
-          </View>
+          </TouchableOpacity>
         </View>
+        <NavbarProfile keySelected={keys} />
       </View>
     </Layout>
   );

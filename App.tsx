@@ -17,6 +17,8 @@ import ProfileScreen from "./screens/ProfileScreen";
 import PlayScreen from "./screens/PlayScreen";
 import CreateQuizzScreen from "./screens/CreateQuizzScreen";
 import CreateQuestionScreen from "./screens/CreateQuizzScreen/CreateQuestionScreen/index";
+import QuizzDetailScreen from "./screens/QuizzScreen/QuizzDetailScreen";
+import StartPlayScreen from "./screens/PlayScreen/StartPlayScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -123,6 +125,22 @@ function App() {
             <Stack.Screen
               name="CreateQuestion"
               component={CreateQuestionScreen}
+              options={{
+                headerShown: false,
+                gestureEnabled: false,
+              }}
+            />
+            <Stack.Screen
+              name="QuizzDetailS"
+              component={QuizzDetailScreen}
+              options={{
+                headerShown: false,
+                gestureEnabled: false,
+              }}
+            />
+            <Stack.Screen
+              name="StartPlay"
+              component={StartPlayScreen}
               options={{
                 headerShown: false,
                 gestureEnabled: false,

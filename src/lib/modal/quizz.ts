@@ -5,6 +5,7 @@ export interface Quizz {
   idUser: string;
   title: string;
   description: string;
+  urlThumbnail: string;
   idCollection: string;
   visibility: string;
   keyword: string;
