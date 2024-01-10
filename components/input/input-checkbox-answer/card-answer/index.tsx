@@ -5,6 +5,7 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 import CheckBox from "../../input-checkbox";
 import { useDispatch, useSelector } from "react-redux";
 import { setAnwser } from "../../../../src/lib/redux/user/anwsersReducer";
+import { anwsers } from "../../../../src/lib/redux/selector/selector";
 
 interface InputCheckBoxProps {
   placeholder?: string;
@@ -42,6 +43,11 @@ const CardAnswer: React.FC<InputCheckBoxProps> = ({
   const [data, setData] = useState<PropsData>();
   const [count, setCount] = useState(0);
   const check = Object.keys(errors).length == 0 ? true : false;
+  const dataAnwers: Array<PropsData> = useSelector(anwsers);
+  const countTrueDataAnwers = dataAnwers.filter(
+    (items) => items.isCorrect
+  ).length;
+
   useEffect(() => {
     if (check) {
       setCount((items) => items + 1);
@@ -68,7 +74,8 @@ const CardAnswer: React.FC<InputCheckBoxProps> = ({
         }}
       >
         <CheckBox
-          checkData={data}
+          lengthTrueDataAnwers={countTrueDataAnwers}
+          checkData={data?.isCorrect}
           handleChange={() => handleSubmit(onSubmit)()}
           name="isCorrect"
           control={control}

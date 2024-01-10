@@ -9,6 +9,7 @@ import {
   Alert,
   ImageBackground,
   Image,
+  ActivityIndicator,
 } from "react-native";
 const StartScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -16,7 +17,7 @@ const StartScreen = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       navigation.push("CheckingAccount");
-    }, 1000);
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -32,9 +33,10 @@ const StartScreen = () => {
         <Text className={`text-[40px] font-bold text-black text-center`}>
           Duck Quizer
         </Text>
-        <View className="flex justify-center items-center">
+        {/* <View className="flex justify-center items-center">
           <View className="py-2 w-[200px] border-2 border-black rounded-xl mt-4" />
-        </View>
+        </View> */}
+        <ActivityIndicator size="large" color="#ffc700" />
       </View>
     </>
   );

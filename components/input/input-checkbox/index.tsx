@@ -11,7 +11,7 @@ interface PropsData {
 }
 
 interface PropsCheckBox {
-  handleChange: Function;
+  handleChange?: Function;
   name: string;
   control: any;
   children?: ReactNode;
@@ -19,7 +19,8 @@ interface PropsCheckBox {
   errorsOption?: any;
   backgroundColor: string;
   checkTrueAnwsers: number;
-  checkData: PropsData;
+  checkData: boolean;
+  lengthTrueDataAnwers: number;
 }
 
 const CheckBox: React.FC<PropsCheckBox> = ({
@@ -31,20 +32,21 @@ const CheckBox: React.FC<PropsCheckBox> = ({
   backgroundColor,
   checkTrueAnwsers,
   checkData,
+  lengthTrueDataAnwers,
 }) => {
-  const dataAnwers: Array<PropsData> = useSelector(anwsers);
-  const countTrueDataAnwers = dataAnwers.filter(
-    (items) => items.isCorrect
-  ).length;
-
   const handlePress = (onChange: Function, value: boolean) => {
     if (
       checkTrueAnwsers >= 2 &&
-      ((value && checkData?.isCorrect) || countTrueDataAnwers <= 2)
+      ((value && checkData) || lengthTrueDataAnwers <= 2)
+      //Kiem tra cau trả lời trê >=2 câu hỏi thì kiểm tra tiếp xem một trong
+      //2 giá trị a = value && checkData hoặc Nếu như trong kho dữ liệu nếu isCorrect trong bộ dữ liệu <=2(3)
+      //thì là đúng và cho thay đổi giá trị
     ) {
       onChange(!value);
     }
-    handleChange();
+    if (handleChange) {
+      handleChange();
+    }
   };
 
   return (

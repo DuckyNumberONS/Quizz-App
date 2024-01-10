@@ -1,4 +1,5 @@
 export interface Anwsers {
+  _id?: string;
   number: number;
   text: string;
   isCorrect: boolean;

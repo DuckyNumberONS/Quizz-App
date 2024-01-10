@@ -28,7 +28,6 @@ export default function LoginScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const onSubmit = async (data: Auth) => {
     const res = await verifyLogin(data);
-    console.log("🚀 ~ file: index.tsx:31 ~ onSubmit ~ res:", res);
     if (res != undefined) {
       dispatch(setUser(res.userFilter));
       dispatch(setToken(res.accessToken));
