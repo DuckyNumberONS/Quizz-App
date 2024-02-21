@@ -1,30 +1,26 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  SafeAreaView,
-  StatusBar,
-} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Layout from "../../components/layout";
 import WelcomeHome from "../../components/welcome-home-section";
 import TopCollections from "../../components/top-collections-section";
 import TopAutors from "../../components/top-autors-section";
-import TopQiz from "../../components/top-quiz-section";
+import TopQuiz from "../../components/top-quiz-section";
+import { useSelector } from "react-redux";
+import { Quizz } from "../../src/lib/modal/quizz";
+import { getListQuizz } from "../../src/lib/api/quizz";
 
 const HomeScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const [data, setData] = useState<Quizz[]>([]);
+  const [loading, setLoading] = useState(false);
 
   return (
     <Layout>
       <WelcomeHome />
       <TopCollections />
       <TopAutors />
-      <TopQiz />
+      <TopQuiz />
     </Layout>
   );
 };

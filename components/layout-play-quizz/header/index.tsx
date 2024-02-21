@@ -15,7 +15,9 @@ const Header: React.FC<PropsHeader> = ({ index, maxLenghth }) => {
   const step = (100 / maxLenghth) * index;
   return (
     <View className="flex-row items-center justify-between">
-      <Text className="text-lg font-semibold">1/{maxLenghth}</Text>
+      <Text className="text-lg font-semibold">
+        {index}/{maxLenghth}
+      </Text>
       <View className="mx-auto flex-row items-center ">
         <View
           className={`flex-row bg-slate-400 w-[150px] rounded-xl mx-auto items-center h-2`}

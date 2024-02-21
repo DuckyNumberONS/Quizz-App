@@ -25,11 +25,11 @@ const ListItem = () => {
       <View className="mt-6">
         <Text className="text-2xl font-bold mb-3">{data.length} Quizer</Text>
         <View className="flex-row items-center relative">
-          <ScrollView>
+          <View className="h-[300px] w-full">
             {data.map((items) => (
               <TouchableOpacity
                 key={items._id}
-                className="flex-row mr-2 rounded-r-[20px] rounded-b-[21px] relative border-b-[5px] border-r-[3px]"
+                className="flex-row mr-2 rounded-r-[20px] rounded-b-[21px] relative border-b-[5px] border-r-[3px] my-2"
                 onPress={() => handleClick(items._id)}
               >
                 <View className="mr-3" style={{ borderColor: "black" }}>
@@ -41,15 +41,17 @@ const ListItem = () => {
                     resizeMethod="auto"
                   />
                 </View>
-                <View>
+                <View className="">
                   <Text className="text-black font-medium text-lg">
-                    {items.title}
+                    {items.title.length > 20
+                      ? items.title.substring(0, 20) + "..."
+                      : items.title}
                   </Text>
-                  <View className="mt-5 flex-row justify-between items-center">
+                  <View className="mt-5 flex-row items-center">
                     <Text className="text-[#b5b2c1] font-medium text-sm">
                       {items.createdAt.substring(0, 10)}
                     </Text>
-                    <View className="bg-violet-500 px-6 py-1 rounded-lg">
+                    <View className="bg-violet-500 px-6 py-1 rounded-lg ml-8">
                       <Text className="text-white font-medium text-sm">
                         {items.play} plays
                       </Text>
@@ -58,7 +60,7 @@ const ListItem = () => {
                 </View>
               </TouchableOpacity>
             ))}
-          </ScrollView>
+          </View>
         </View>
       </View>
     </>

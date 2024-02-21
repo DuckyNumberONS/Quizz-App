@@ -6,17 +6,33 @@ import LayoutPlayQuizz from "../../components/layout-play-quizz";
 import { getItemQuizz } from "../../src/lib/api/quizz";
 import { Quizz } from "../../src/lib/modal/quizz";
 import { Anwsers } from "../../src/lib/modal/question";
+import CountdownTimer from "../../components/countdown-timer";
+import { useDispatch, useSelector } from "react-redux";
+import { setQuestionsResult } from "../../src/lib/redux/user/questionResultsReducer";
+import { setIndexQuestion } from "../../src/lib/redux/user/indexQuestion";
+import { indexQuestions } from "../../src/lib/redux/selector/selector";
 interface PropsPrams {
   quizzId?: string;
 }
 
+interface PropsDataQuestionsResults {
+  rightAnswer: boolean;
+  time: number;
+  point: number;
+}
+
 const PlayScreen = () => {
+  const dataIndexQuestion = useSelector(indexQuestions);
+  const indexQuestion = dataIndexQuestion.indexQuestion;
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
+  const dispatch = useDispatch();
   const router = useRoute();
   const [quizz, setQuizz] = useState<Quizz>();
   const question = quizz ? quizz.question : [];
   const [notification, setNotification] = useState("");
-  const correctAnswers = question[3]?.anwsers.map((item) => ({
+  const [submitted, setSubmitted] = useState(false);
+  const [dataResult, setDataResult] = useState<PropsDataQuestionsResults>();
+  const correctAnswers = question[indexQuestion]?.anwsers.map((item) => ({
     id: item._id,
     isCorrect: item.isCorrect,
   }));
@@ -27,7 +43,7 @@ const PlayScreen = () => {
     (value) => value !== undefined && value.isCorrect === true
   ).length;
 
-  const lengthTrueAnswer = question[3]?.anwsers.filter(
+  const lengthTrueAnswer = question[indexQuestion]?.anwsers.filter(
     (items) => items.isCorrect === true
   ).length;
 
@@ -49,7 +65,17 @@ const PlayScreen = () => {
   useEffect(() => {
     if (notification !== "") {
       const timer = setTimeout(() => {
-        navigation.push("Play", { quizzId: quizz._id });
+        if (indexQuestion == question.length - 1) {
+          dispatch(setIndexQuestion({ indexQuestion: 0, maxLengthIndex: 1 }));
+          navigation.push("ResultsPlay", { quizzId: quizz._id });
+        } else {
+          const updatedIndex = indexQuestion + 1;
+          const maxLengthIndex = question.length - 1;
+          dispatch(
+            setIndexQuestion({ indexQuestion: updatedIndex, maxLengthIndex })
+          );
+          navigation.push("Play", { quizzId: quizz._id });
+        }
       }, 3000);
       return () => clearTimeout(timer);
     }
@@ -94,31 +120,64 @@ const PlayScreen = () => {
 
       if (arr.length === lengthTrueAnswer) {
         setNotification("TRUE");
+        setSubmitted(true);
+        const data = {
+          rightAnswer: true,
+          time: 0,
+          point: question[indexQuestion]?.point,
+        };
+        setDataResult(data);
       } else {
         setNotification("FALSE");
+        const data = { rightAnswer: false, time: 0, point: 0 };
+        setDataResult(data);
+        setSubmitted(true);
       }
+    }
+  };
+
+  const handleTick = (updatedSeconds: number) => {
+    if (notification === "TRUE" || notification === "FALSE") {
+      const updatedDataResult = { ...dataResult, time: updatedSeconds };
+      dispatch(setQuestionsResult(updatedDataResult));
+    }
+    if (updatedSeconds === 0 && !submitted) {
+      const data = {
+        rightAnswer: false,
+        time: updatedSeconds,
+        point: question[indexQuestion]?.time,
+      };
+      dispatch(setQuestionsResult(data));
+      setNotification("FALSE");
     }
   };
 
   return (
     <>
       <LayoutPlayQuizz
-        index={1}
+        index={indexQuestion + 1}
         maxLenghthQuizz={question.length}
         notification={notification}
-        poin={question[3]?.point}
+        poin={question[indexQuestion]?.point}
       >
         <Image
           className="w-full h-[220px] rounded-2xl mt-5 z-10"
-          source={{ uri: `${question[3]?.imgQuestion}` }}
+          source={{ uri: `${question[indexQuestion]?.imgQuestion}` }}
           resizeMethod="auto"
         />
         <Text className="mt-6 text-2xl font-semibold h-20">
-          {question[3]?.title}
+          {question[indexQuestion]?.title}
         </Text>
+        {question && question[indexQuestion]?.time && (
+          <CountdownTimer
+            initialSeconds={question[indexQuestion]?.time}
+            submitted={submitted}
+            onTick={handleTick}
+          />
+        )}
         {/* Anwwsers */}
         <View className="w-full flex-row flex-wrap mt-4">
-          {question[3]?.anwsers.map((items, index) => (
+          {question[indexQuestion]?.anwsers.map((items, index) => (
             <View
               className="w-1/2 border-r-[5px] border-white mb-3"
               key={items._id}

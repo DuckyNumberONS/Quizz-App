@@ -1,7 +1,7 @@
 import axios from "../../utils/index";
 import { User } from "../modal/user";
 
-export const getUser = async () => {
+export const getListUser = async () => {
   try {
     const response = await axios.get("/user/getAllUser");
     const users = response.data;
