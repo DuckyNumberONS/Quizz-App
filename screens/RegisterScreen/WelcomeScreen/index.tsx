@@ -18,7 +18,7 @@ const Welcome = () => {
       await postUser(data);
       navigation.push("Login");
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -31,9 +31,9 @@ const Welcome = () => {
       titleButton="Let's go"
       step={4}
     >
-      <View className="my-16">
+      <View className="my-16 mx-auto">
         <Image
-          className="bg-cover bg-no-repeat w-[350px] h-[350px] "
+          className="bg-cover bg-no-repeat w-[350px] h-[350px] mx-auto"
           source={require("../../../public/images/welcome.png")}
         />
       </View>

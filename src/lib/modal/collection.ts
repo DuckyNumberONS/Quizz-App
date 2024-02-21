@@ -2,7 +2,7 @@ export interface Collection {
   _id: string;
   title: string;
   description: string;
-  imgThumbnailstring: string;
+  imgThumbnail: string;
   updatedAt?: string;
   createdAt?: string;
 }

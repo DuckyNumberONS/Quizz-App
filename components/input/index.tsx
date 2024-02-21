@@ -145,6 +145,7 @@ const Input: React.FC<InputProps> = ({
               control={control}
               render={({ field }) => (
                 <TextInput
+                  ref={textInputRef}
                   keyboardType="numeric"
                   className={classInput}
                   placeholder={placeholder}

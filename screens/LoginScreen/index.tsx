@@ -1,11 +1,4 @@
-import {
-  View,
-  Text,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  Alert,
-} from "react-native";
+import { View, Text } from "react-native";
 import { CheckBox } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -26,6 +19,7 @@ interface Auth {
 export default function LoginScreen() {
   const dispatch = useDispatch();
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
+
   const onSubmit = async (data: Auth) => {
     const res = await verifyLogin(data);
     if (res != undefined) {
@@ -33,9 +27,10 @@ export default function LoginScreen() {
       dispatch(setToken(res.accessToken));
       navigation.push("Home");
     } else {
-      console.log("false");
+      console.error("false");
     }
   };
+
   const {
     control,
     handleSubmit,
@@ -43,7 +38,7 @@ export default function LoginScreen() {
   } = useForm();
 
   const handleClick = () => {
-    console.log("check");
+    // coming soon
   };
   return (
     <LayoutReg

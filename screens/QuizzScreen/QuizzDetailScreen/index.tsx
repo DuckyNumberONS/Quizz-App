@@ -5,9 +5,10 @@ import {
   TouchableOpacity,
   Text,
   ActivityIndicator,
+  ScrollView,
 } from "react-native";
 import { Quizz } from "../../../src/lib/modal/quizz";
-import { getItemQuizz } from "../../../src/lib/api/quizz";
+import { deleteQuizz, getItemQuizz } from "../../../src/lib/api/quizz";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { getUserById } from "../../../src/lib/api/user";
@@ -22,6 +23,8 @@ import Animated, {
   FadeInRight,
   BounceInRight,
 } from "react-native-reanimated";
+import { useSelector } from "react-redux";
+import { user } from "../../../src/lib/redux/selector/selector";
 
 interface PropsPrams {
   id?: string;
@@ -29,14 +32,14 @@ interface PropsPrams {
 const QuizzDetailScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
   const [quizz, setQuizz] = useState<Quizz>();
-  const [user, setUser] = useState<User>();
+  const [users, setUser] = useState<User>();
   const [popup, setPopup] = useState(false);
   const route = useRoute();
   const [loading, setLoading] = useState(false);
   const [start, setStart] = useState(false);
 
   const { id }: PropsPrams = route.params;
-
+  const dataUser: User = useSelector(user);
   const handleBackScreen = () => {
     navigation.goBack();
   };
@@ -76,6 +79,11 @@ const QuizzDetailScreen = () => {
     navigation.push("Play", { quizzId: quizz._id });
   };
 
+  const handleDelete = async (id: string) => {
+    const res = await deleteQuizz(id);
+    navigation.push("Profile");
+  };
+
   return (
     <>
       <View className="mt-10 h-full mx-3">
@@ -98,6 +106,7 @@ const QuizzDetailScreen = () => {
           <Text className="text-2xl font-semibold text-start mt-4">
             {quizz?.title}
           </Text>
+
           <View className="flex-row w-full mt-10 border-2 py-2 rounded-xl border-[#b5b2c1]">
             <View className="w-1/4 px-2 flex-col mx-auto">
               <Text className="text-center text-[#b7b4c3] text-lg font-semibold">
@@ -137,28 +146,42 @@ const QuizzDetailScreen = () => {
                 width={70}
                 height={70}
                 source={{
-                  uri: `${user?.urlAvatar}`,
+                  uri: `${users?.urlAvatar}`,
                 }}
               />
               <View>
-                <Text className="text-lg font-semibold">{user?.fullName}</Text>
+                <Text className="text-lg font-semibold">{users?.fullName}</Text>
                 <Text className="text-start text-[#b7b4c3] mt-1 font-medium">
-                  @{user?.username}
+                  @{users?.username}
                 </Text>
               </View>
             </View>
-            <View className="bg-black py-3 px-6 rounded-3xl">
-              <Text className="text-white text-base text-center font-medium">
-                Follow
-              </Text>
-            </View>
+            {dataUser._id === users?._id ? (
+              <TouchableOpacity
+                className="mr-3 rounded-xl p-3 border-2"
+                onPress={() => handleDelete(id)}
+              >
+                <Image
+                  className="bg-cover bg-no-repeat w-5 h-5"
+                  source={require("../../../public/images/recycle.png")}
+                />
+              </TouchableOpacity>
+            ) : (
+              <View className="bg-black py-3 px-6 rounded-3xl">
+                <Text className="text-white text-base text-center font-medium">
+                  Follow
+                </Text>
+              </View>
+            )}
           </View>
-          <View className="mt-5">
+          <View className="mt-1 h-[200px]">
             <Text className="text-xl font-semibold">Description</Text>
-            <Text>{quizz?.description}</Text>
+            <ScrollView className="h-[100px]">
+              <Text>{quizz?.description}</Text>
+            </ScrollView>
           </View>
         </View>
-        <View className="flex-row w-full items-center justify-between absolute bottom-14">
+        <View className="flex-row w-full items-center justify-between absolute bottom-12">
           <TouchableOpacity
             className="w-[48%] bg-black border-b-4 border-r-4 border-[#6d5ff6] py-5 rounded-3xl"
             // onPress={() => handleClick("TypeAccount")}

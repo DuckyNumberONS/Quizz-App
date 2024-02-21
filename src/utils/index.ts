@@ -1,6 +1,5 @@
 import axios, { AxiosRequestHeaders } from "axios";
 import { API } from "../lib/constants";
-import { store } from "../lib/redux/store";
 import useGetAsyncStorage from "../lib/hook/useGetAsyncStorage";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 // interface CustomAxiosRequestHeaders extends AxiosRequestHeaders {
@@ -9,7 +8,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const instance = axios.create({
   // DÙng ở nhà
-  baseURL: "http://192.168.1.8:8004",
+  baseURL: "http://192.168.1.16:8004",
+  // baseURL: "http://172.16.173.83:8004",
   // DÙng ở trường
   // baseURL: "http://172.16.234.181:8004",
   // baseURL: "http://192.168.0.5:8004",

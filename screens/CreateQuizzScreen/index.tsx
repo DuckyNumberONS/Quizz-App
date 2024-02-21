@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import { View, TextInput } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import Layout from "../../components/layout";
@@ -65,7 +65,6 @@ const CreateQuizzScreen = () => {
           setPopup(true);
         }
       } catch (error) {
-        console.log(error);
         setError(error);
       }
     }
@@ -80,6 +79,7 @@ const CreateQuizzScreen = () => {
         titleButton="Add question"
         // theme={popup ? "#4d4d4d" : "white"}
       >
+        {/* <TextInput defaultValue="https://blog.topcv.vn/wp-content/uploads/2020/09/cong-nghe-thong-tin-la-gi-tn.jpg" /> */}
         <View className="mt-3">
           <Input
             label="urlThumbnail"

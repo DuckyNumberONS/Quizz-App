@@ -6,10 +6,12 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { NativeStackNavigationProp } from "@react-navigation/native-stack";
 interface Props {
   children: ReactNode;
+  backgroundColor?: string;
 }
 
-const Layout: React.FC<Props> = ({ children }) => {
+const Layout: React.FC<Props> = ({ children, backgroundColor = "white" }) => {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
+
   const route = useRoute();
   const currentScreen = route.name;
 
@@ -23,12 +25,19 @@ const Layout: React.FC<Props> = ({ children }) => {
         return false;
       case "CreateQuestion":
         return false;
+      case "ResultsPlay":
+        return false;
+      case "TopResultsPlay":
+        return false;
       default:
         return true;
     }
   };
   return (
-    <View className="flex-1 bg-white relative">
+    <View
+      className="flex-1 relative"
+      style={{ backgroundColor: backgroundColor }}
+    >
       <View className="flex-1 mt-10 relative">
         {checkPath() && <Header />}
         <ScrollView

@@ -19,6 +19,8 @@ import CreateQuizzScreen from "./screens/CreateQuizzScreen";
 import CreateQuestionScreen from "./screens/CreateQuizzScreen/CreateQuestionScreen/index";
 import QuizzDetailScreen from "./screens/QuizzScreen/QuizzDetailScreen";
 import StartPlayScreen from "./screens/PlayScreen/StartPlayScreen";
+import ResultsPlayScreen from "./screens/PlayScreen/ResultsPlayScreen";
+import TopResultsPlayScreen from "./screens/PlayScreen/TopResultsPlayScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -141,6 +143,22 @@ function App() {
             <Stack.Screen
               name="StartPlay"
               component={StartPlayScreen}
+              options={{
+                headerShown: false,
+                gestureEnabled: false,
+              }}
+            />
+            <Stack.Screen
+              name="ResultsPlay"
+              component={ResultsPlayScreen}
+              options={{
+                headerShown: false,
+                gestureEnabled: false,
+              }}
+            />
+            <Stack.Screen
+              name="TopResultsPlay"
+              component={TopResultsPlayScreen}
               options={{
                 headerShown: false,
                 gestureEnabled: false,

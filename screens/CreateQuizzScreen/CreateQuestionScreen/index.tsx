@@ -79,7 +79,7 @@ const CreateQuestionScreen = () => {
 
   return (
     <Layout>
-      <TextInput defaultValue="https://png.pngtree.com/background/20230610/original/pngtree-roosters-with-a-long-red-beak-and-wings-standing-up-picture-image_3024314.jpg" />
+      {/* <TextInput defaultValue="https://hanoicomputercdn.com/media/product/51311_corsair_series_cv_550_1.jpg" /> */}
       <FormCreateQuesion
         title="Create Question"
         onSubmit={onSubmit}

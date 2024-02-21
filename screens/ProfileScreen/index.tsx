@@ -16,6 +16,8 @@ import { useSelector } from "react-redux";
 import { user } from "../../src/lib/redux/selector/selector";
 import { User } from "../../src/lib/modal/user";
 import NavbarProfile from "../../components/navbar-profile";
+import { QuizzResult } from "../../src/lib/modal/quizzResult";
+import { getItemQuizzResultByUser } from "../../src/lib/api/quizzResult";
 
 const ProfileScreen = () => {
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
@@ -24,7 +26,14 @@ const ProfileScreen = () => {
   const handleClick = (key: string) => {
     setKeys(key);
   };
-
+  const [dataHistory, setHistory] = useState<QuizzResult[]>([]);
+  useEffect(() => {
+    const fetch = async () => {
+      const res = await getItemQuizzResultByUser(data._id);
+      setHistory(res);
+    };
+    fetch();
+  }, []);
   return (
     <Layout>
       <View className="relative">
@@ -93,13 +102,6 @@ const ProfileScreen = () => {
             <Text className="text-center text-[20px] font-bold">40</Text>
           </View>
         </View>
-        {/* <View className="mt-8">
-          <TouchableOpacity className="bg-black py-3 rounded-3xl">
-            <Text className="text-[18px] text-center font-medium text-[#fbfbfb]">
-              Edit profile
-            </Text>
-          </TouchableOpacity>
-        </View> */}
         <View className="bg-[#edf0da] flex-row items-center w-full mt-6 rounded-3xl">
           <TouchableOpacity
             onPress={() => handleClick("Quizer")}
@@ -107,15 +109,6 @@ const ProfileScreen = () => {
             style={keys === "Quizer" && { backgroundColor: "white" }}
           >
             <Text className="text-center text-[19px] font-medium">Quizer</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => handleClick("Collections")}
-            className="w-1/3 py-2 rounded-3xl border-[4px] border-[#edf0da]"
-            style={keys === "Collections" && { backgroundColor: "white" }}
-          >
-            <Text className="text-center text-[19px] font-medium">
-              Collections
-            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => handleClick("About")}
@@ -128,8 +121,21 @@ const ProfileScreen = () => {
           >
             <Text className="text-center text-[19px] font-medium">About</Text>
           </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => handleClick("HistoryPlay")}
+            className="w-1/3 py-2 rounded-3xl border-[4px] border-[#edf0da]"
+            style={keys === "HistoryPlay" && { backgroundColor: "white" }}
+          >
+            <Text className="text-center text-[19px] font-medium">
+              History Plays
+            </Text>
+          </TouchableOpacity>
         </View>
-        <NavbarProfile keySelected={keys} />
+        <NavbarProfile
+          keySelected={keys}
+          data={data}
+          dataHistory={dataHistory}
+        />
       </View>
     </Layout>
   );

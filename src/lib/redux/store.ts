@@ -6,6 +6,8 @@ import userReducer from "./user/userReducer";
 import tokenReducer from "./user/tokenReducer";
 import anwsersReducer from "./user/anwsersReducer";
 import questionsReducer from "./user/questionsReducer";
+import questionsResultsReducer from "./user/questionResultsReducer";
+import indexQuestionsReducer from "./user/indexQuestion";
 
 const tokenPersistConfig = {
   key: "root",
@@ -19,6 +21,8 @@ const rootReducer = combineReducers({
   token: tokenReducer,
   anwsers: anwsersReducer,
   question: questionsReducer,
+  questionResults: questionsResultsReducer,
+  indexQuestions: indexQuestionsReducer,
 });
 
 const persistedReducer = persistReducer(tokenPersistConfig, rootReducer);
