@@ -1,7 +1,7 @@
 Project Quizz (Expo) - ReactNative
-
-link design figma: https://www.figma.com/file/XCjKBlSNLTPwotA8zi2OvO/Quiz-mobile-app-UI-Kit---Quizer-(Community)?type=design&mode=design
 Matching screen: pixel 4xl 
+link design figma: https://www.figma.com/file/XCjKBlSNLTPwotA8zi2OvO/Quiz-mobile-app-UI-Kit---Quizer-(Community)?type=design&mode=design
+
 
 
 ### `npm install` or `yarn install`
